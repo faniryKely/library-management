@@ -197,7 +197,29 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
         400:
-          description: La requête est invalide
+          description: invalid request
+  /authors/import:
+    post:
+      operationId: importAuthors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ImportAuthor'
+                - type: file
+                  format: application/vnd.ms-excel
+  /Book/import:
+    post:
+      operationId: importAuthors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ImportBook'
+                - type: file
+                  format: application/vnd.ms-excel
 components:
   schemas:
     Book:
@@ -309,11 +331,6 @@ components:
               enum:
                 - "Eternal server error"
                 - "An error occurred while processing your request"
-
-
-
-
-
   parameters:
     queryPagination:
        in: query
