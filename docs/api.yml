@@ -40,9 +40,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
+                $ref: '#/components/schemas/Response200'
+        400:
+          description: Request invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response400'
+        500:
+          description: sever error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response500'
+        403:
+          description: Request invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response403'
     put:
       tags:
         - Books
@@ -57,13 +73,17 @@ paths:
                 $ref: '#/components/schemas/Book'
       responses:
         200:
-          description: The list of created or updated books
+          description: The list of created or update Books
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
+                $ref: '#/components/schemas/Response200'
+        400:
+          description: Request invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response200'
   /authors:
     get:
       summary: Get all authors
@@ -239,6 +259,61 @@ components:
         Pagesize:
           type: integer
           default: 50
+    Response:
+      type: object
+      properties:
+        status:
+          type: integer
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+        body:
+          type: any
+    Response200:
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          properties:
+            data:
+              type: any
+    Response400:
+        allOf:
+          - $ref: '#/components/schemas/Response'
+          - type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - "Bad Request"
+                  - "Invalid Request"
+
+    Response403:
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          properties:
+            error:
+              type: string
+              enum:
+                - "Access denied"
+                - "Not allow to do this action"
+    Response500:
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          properties:
+            error:
+              type: string
+              enum:
+                - "Eternal server error"
+                - "An error occurred while processing your request"
+
+
+
+
+
   parameters:
     queryPagination:
        in: query
