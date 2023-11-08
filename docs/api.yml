@@ -32,27 +32,7 @@ paths:
             type: string
             format: date
           required: false
-        - in: query
-          name: releaseDateMax
-          description: |
-            If  `releaseDateMin` is not provided, `releaseDateMax` is ignored.
-            `releaseDateMax` can not be after `releaseDateMin`.
-          schema:
-            type: string
-            format: date
-          required: false
-        - in: query
-          name: page
-          schema:
-            type: integer
-          required: false
-          default: 1
-        - in: query
-          name: pageSize
-          schema:
-            type: integer
-          required: false
-          default: 50
+        - $ref: '#/components/schemas/Pagination'
 
       responses:
         200:
@@ -99,18 +79,7 @@ paths:
           schema:
             type: string
           required: false
-        - in: path
-          name: page
-          schema:
-            type: integer
-          required: false
-          default: 1
-        - in: path
-          name: pageSize
-          schema:
-            type: integer
-          required: false
-          default: 50
+        - $ref: '#/components/schemas/Pagination'
 
 
       responses:
@@ -261,4 +230,23 @@ components:
             type: integer
           authorId:
             type: integer
-
+    Pagination:
+      type: object
+      properties:
+        Page:
+          type: integer
+          default: 1
+        Pagesize:
+          type: integer
+          default: 50
+  parameters:
+    queryPagination:
+       in: query
+       name: pagination
+       schema:
+         $ref: '#/components/schemas/Pagination'
+    pathPagination:
+      in: path
+      name: pagination
+      schema:
+        $ref: '#/components/schemas/Pagination'
